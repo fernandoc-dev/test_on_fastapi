@@ -1,0 +1,9 @@
+{
+  "status": "success",
+  "transaction_id": "txn_abc123",
+  "amount": 100.00,
+  "currency": "USD",
+  "payment_method": "card",
+  "created_at": "2024-01-01T00:00:00Z"
+}
+

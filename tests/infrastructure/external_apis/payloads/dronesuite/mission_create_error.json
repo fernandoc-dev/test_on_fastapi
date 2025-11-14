@@ -1,0 +1,10 @@
+{
+  "status": "error",
+  "error_code": "MISSION_CREATE_FAILED",
+  "message": "Failed to create mission: Invalid parameters",
+  "details": {
+    "field": "coordinates",
+    "reason": "Coordinates are out of range"
+  }
+}
+
