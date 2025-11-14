@@ -1,0 +1,22 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+    container_name: fastapi_test_app
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+    env_file:
+      - .env
+    volumes:
+      - ./app:/app
+    restart: unless-stopped
+    networks:
+      - fastapi_network
+
+networks:
+  fastapi_network:
+    driver: bridge
+
