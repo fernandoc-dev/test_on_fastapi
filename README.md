@@ -73,6 +73,8 @@ docker-compose up -d
 The application will be available at:
 - API: http://localhost:8000
 - Documentation: http://localhost:8000/docs
+- pgAdmin: http://localhost:5050 (email: admin@admin.com, password: admin)
+- PostgreSQL: localhost:5432 (user: postgres, password: postgres, database: fastapi_db)
 
 ### 3. Run tests
 
@@ -163,6 +165,26 @@ Copy `.env.example` to `.env` and adjust as needed:
 ```bash
 cp .env.example .env
 ```
+
+**Environment Variables:**
+All configuration is managed through `.env` file. Copy `.env.example` to `.env` and customize:
+
+```bash
+cp .env.example .env
+```
+
+Key variables:
+- `API_PORT`: Application port (default: 8000)
+- `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`: Database credentials (DATABASE_URL is automatically constructed from these)
+- `POSTGRES_PORT`: Database port (default: 5432)
+- `PGADMIN_PORT`: pgAdmin port (default: 5050)
+- `PGADMIN_DEFAULT_EMAIL`, `PGADMIN_DEFAULT_PASSWORD`: pgAdmin credentials
+
+**Note:** `DATABASE_URL` is automatically built from the individual PostgreSQL variables in `docker-compose.yml` to ensure consistency. You don't need to set it manually.
+
+**Default Services:**
+- PostgreSQL: `localhost:${POSTGRES_PORT:-5432}` (user: `postgres`, password: `postgres`, database: `fastapi_db`)
+- pgAdmin: `http://localhost:${PGADMIN_PORT:-5050}` (email: `admin@admin.com`, password: `admin`)
 
 ### Test Configuration
 
