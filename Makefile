@@ -20,7 +20,16 @@ stop:
 
 test:
 	@echo "Running tests..."
-	pytest tests/ -v
+	@if [ -d "venv_test" ] && [ -f "venv_test/bin/pytest" ]; then \
+		echo "Using virtual environment pytest..."; \
+		PYTHONPATH=$$(pwd) venv_test/bin/pytest tests/ -v; \
+	elif command -v pytest >/dev/null 2>&1; then \
+		echo "Using system pytest..."; \
+		PYTHONPATH=$$(pwd) pytest tests/ -v; \
+	else \
+		echo "Error: pytest not found. Please run 'make env-test' first to create the test environment."; \
+		exit 1; \
+	fi
 
 env-test:
 	@echo "Creating virtual environment for tests..."
