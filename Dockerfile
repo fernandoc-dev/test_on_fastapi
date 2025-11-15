@@ -14,9 +14,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY app/ .
 
-# Expose port
+# Expose port (default 8000, can be overridden via docker-compose)
 EXPOSE 8000
 
-# Default command
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Default command (uses environment variables from docker-compose)
+CMD ["sh", "-c", "uvicorn main:app --host ${API_HOST:-0.0.0.0} --port ${API_PORT:-8000}"]
 
