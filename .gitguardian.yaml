@@ -1,0 +1,18 @@
+# GitGuardian configuration
+# This file tells GitGuardian to ignore certain patterns in specific files
+
+paths-ignore:
+  - "**/.env.example"
+  - "**/docker-compose.yml"
+
+# Allow these patterns (they are placeholders, not real secrets)
+matches-ignore:
+  - name: "PostgreSQL password placeholder"
+    match: "your_postgres_password|PLACEHOLDER_PASSWORD|dev_password"
+  - name: "pgAdmin password placeholder"
+    match: "your_pgadmin_password|PLACEHOLDER_PASSWORD"
+  - name: "Development credentials"
+    match: "PLACEHOLDER_USER|PLACEHOLDER_DB|PLACEHOLDER_EMAIL|dev_user|dev_password|dev_db|dev@example.com"
+  - name: "Database URL placeholder"
+    match: "postgresql://.*PLACEHOLDER.*"
+
