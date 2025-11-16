@@ -2,6 +2,8 @@
 
 Modular and reusable testing template for FastAPI with organized structure for unit, integration, E2E and load tests.
 
+> **Note**: This repository serves as a testing template. For the actual project implementation, see [PROJECT.md](./PROJECT.md) which describes the Project Management Platform with Multi-Source Integration.
+
 ## Project Structure
 
 ```
