@@ -82,7 +82,26 @@ def db_engine():
 def db_session(db_engine):
     """
     Provide a SQLAlchemy session per test with transaction scope.
+    Each test runs in a transaction that is rolled back after the test,
+    ensuring test isolation.
     """
-    with session_scope(db_engine) as session:
+    from sqlalchemy.orm import sessionmaker
+    from sqlalchemy import text
+    
+    SessionLocal = sessionmaker(bind=db_engine, autoflush=False, autocommit=False)
+    session = SessionLocal()
+    
+    try:
         yield session
+        # Rollback at the end to ensure test isolation
+        session.rollback()
+    finally:
+        # Clean up any remaining data
+        try:
+            session.execute(text("TRUNCATE TABLE users RESTART IDENTITY CASCADE"))
+            session.commit()
+        except Exception:
+            session.rollback()
+        finally:
+            session.close()
 
