@@ -2,7 +2,16 @@
 
 Modular and reusable testing template for FastAPI with organized structure for unit, integration, E2E and load tests.
 
-> **Note**: This repository serves as a testing template. For the actual project implementation, see [PROJECT.md](./PROJECT.md) which describes the Project Management Platform with Multi-Source Integration.
+This is a **testing template**, not a full application. The included FastAPI app is minimal (hello world) to serve as a testing target. The real value is in the comprehensive testing infrastructure.
+
+## What’s included (high-level)
+
+- Testing layers: unit, integration, e2e, load
+- Centralized testing configuration with pytest and fixtures
+- Encapsulated database backend for tests using Postgres + Testcontainers
+- Flexible schema application strategies (SQLAlchemy, SQLModel, or raw SQL files)
+- Deterministic, optionally persistent test database container for debugging
+- Idempotent SQL seed execution
 
 ## Project Structure
 
@@ -27,6 +36,80 @@ tests/
     pytest.ini
     requirements.test.txt
 ```
+
+## Environment configuration (App vs Tests)
+
+This template uses separate environment files to clearly split application concerns from testing concerns:
+
+- Application runtime: `.env` (at repo root)
+- Testing runtime: `tests/.env.test`
+
+Only the testing stack reads `tests/.env.test` (via `tests/infrastructure/config/settings_test.py`). The application keeps using `.env` as usual.
+
+### Testing environment: tests/.env.test
+
+Create the file `tests/.env.test` (you can also create a `tests/.env.test.example` and copy it). Suggested content:
+
+```env
+# DB backend for tests
+TEST_DB_BACKEND=postgres_testcontainers
+
+# Seeds directory (optional)
+TEST_DB_SEEDS_DIR=tests/infrastructure/db/seed
+
+# Schema strategy (choose one)
+# 1) Use raw SQL files (default example)
+SQL_FILES_DIR=tests/infrastructure/db/migrations/sql
+# 2) Or use SQLAlchemy models
+# SQLALCHEMY_SCHEMA_MODULE=app.infrastructure.database.models
+# SQLALCHEMY_BASE_ATTRIBUTE=Base
+# 3) Or use SQLModel models
+# SQLMODEL_SCHEMA_MODULE=app.infrastructure.database.sqlmodel_models
+# SQLMODEL_ATTRIBUTE=SQLModel
+
+# Testcontainers controls
+# Keep the Postgres container alive after the test session (1=yes, 0=no)
+KEEP_TEST_DB=0
+# Deterministic container name (useful for debugging)
+TEST_DB_CONTAINER_NAME=fastapi_test_db_tc
+# Fixed host port mapping (optional, e.g., 5433). Leave empty for random.
+TEST_DB_PORT=
+# Credentials used by the test container (and to connect if persistent)
+TEST_DB_USER=test
+TEST_DB_PASSWORD=test
+TEST_DB_NAME=test
+```
+
+### Application environment: .env
+
+Keep using your standard `.env` for the application (not used by the testing DB manager). Database variables in `.env` are independent from the testing ones.
+
+## Test database backend (encapsulated)
+
+The tests use a centralized DB manager to start and configure a Postgres container via Testcontainers:
+
+- File: `tests/infrastructure/db/dialects/postgres_testcontainers.py`
+- Manager: `tests/infrastructure/db/manager.py`
+- Fixtures: `tests/conftest.py` exposes:
+  - `db_engine` (per session): creates schema and runs seeds once
+  - `db_session` (per test): provides a SQLAlchemy session with transaction scope
+
+Key features:
+- Deterministic container name via `TEST_DB_CONTAINER_NAME`
+- Optional persistence across runs with `KEEP_TEST_DB=1` (disables Ryuk so it won’t be auto-removed)
+- Optional fixed host port via `TEST_DB_PORT`
+- Flexible schema strategies:
+  - SQL files: all `.sql` files in a directory are executed in order
+  - SQLAlchemy: run `Base.metadata.create_all(engine)`
+  - SQLModel: run `SQLModel.metadata.create_all(engine)`
+- Seed execution: any `.sql` in `tests/infrastructure/db/seed` (or your custom dir) will be executed in order; prefer idempotent statements
+
+Example workflows:
+- Keep container for debugging:
+  - Set in `tests/.env.test`: `KEEP_TEST_DB=1`, `TEST_DB_PORT=5433`
+  - Run tests, then connect with your SQL client to `postgres://TEST_DB_USER:TEST_DB_PASSWORD@localhost:5433/TEST_DB_NAME`
+- Fast ephemeral container:
+  - Set `KEEP_TEST_DB=0` and leave `TEST_DB_PORT` empty for random mapping
 
 ## Prerequisites
 
