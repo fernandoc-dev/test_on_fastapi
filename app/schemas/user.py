@@ -1,5 +1,5 @@
 """
-User schema - defines the structure of User objects in API responses
+User schema - defines the structure of User objects in API responses and requests
 """
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
@@ -20,4 +20,23 @@ class User(BaseModel):
     updated_at: Optional[datetime] = None
     
     model_config = {"from_attributes": True}  # Allows conversion from SQLAlchemy models
+
+
+class UserCreate(BaseModel):
+    """
+    User creation request model.
+    """
+    email: EmailStr
+    username: str
+    is_active: bool = True
+
+
+class UserUpdate(BaseModel):
+    """
+    User update request model.
+    All fields are optional for partial updates.
+    """
+    email: Optional[EmailStr] = None
+    username: Optional[str] = None
+    is_active: Optional[bool] = None
 
