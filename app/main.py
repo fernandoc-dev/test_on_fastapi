@@ -2,12 +2,16 @@
 Main FastAPI application
 """
 from fastapi import FastAPI
+from app.routers import users
 
 app = FastAPI(
     title="FastAPI Test Template",
     description="Modular and reusable testing template for FastAPI",
     version="1.0.0"
 )
+
+# Include routers
+app.include_router(users.router)
 
 
 @app.get("/")
