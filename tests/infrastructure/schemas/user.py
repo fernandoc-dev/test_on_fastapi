@@ -53,3 +53,25 @@ class UserSpec(BaseModel):
         "from_attributes": True,  # Allows conversion from dict/ORM objects
     }
 
+
+class UserCreateSpec(BaseModel):
+    """
+    User creation request specification for tests.
+    
+    Defines what the API should accept when creating a user.
+    """
+    email: EmailStr
+    username: str
+    is_active: bool = True
+
+
+class UserUpdateSpec(BaseModel):
+    """
+    User update request specification for tests.
+    
+    Defines what the API should accept when updating a user.
+    All fields are optional for partial updates.
+    """
+    email: Optional[EmailStr] = None
+    username: Optional[str] = None
+    is_active: Optional[bool] = None
