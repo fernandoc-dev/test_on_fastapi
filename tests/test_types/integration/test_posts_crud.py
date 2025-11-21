@@ -11,7 +11,7 @@ from unittest.mock import AsyncMock, patch, MagicMock
 from httpx import AsyncClient
 
 from tests.infrastructure.schemas.post import PostSpec, PostCreateSpec, PostUpdateSpec
-from tests.infrastructure.external_apis.providers.posts_mock import PostsMock
+from tests.infrastructure.external_apis.posts.mock import PostsMock
 
 
 @pytest.fixture

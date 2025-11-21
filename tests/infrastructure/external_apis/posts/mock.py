@@ -1,6 +1,6 @@
 """
 Mock for Posts API provider for tests.
-Loads assets from tests/infrastructure/external_apis/assets/posts/
+Loads payloads from tests/infrastructure/external_apis/posts/payloads/
 """
 from typing import Dict, Any, List, Optional
 import json
@@ -11,8 +11,8 @@ class PostsMock:
     """Mock for Posts API service"""
     
     def __init__(self):
-        """Initialize mock with assets directory"""
-        self.base_path = Path(__file__).parent.parent / "assets" / "posts"
+        """Initialize mock with payloads directory"""
+        self.base_path = Path(__file__).parent / "payloads"
     
     def _load_json_file(self, filename: str) -> Any:
         """
