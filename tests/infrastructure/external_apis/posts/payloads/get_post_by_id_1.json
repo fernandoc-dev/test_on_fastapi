@@ -1,9 +1,0 @@
-{
-  "id": 1,
-  "title": "Understanding TDD with FastAPI",
-  "body": "Test-Driven Development is a powerful methodology that helps ensure code quality and maintainability.",
-  "userId": 1,
-  "createdAt": "2024-01-15T10:30:00Z",
-  "updatedAt": null
-}
-
