@@ -1,0 +1,179 @@
+openapi: 3.0.3
+info:
+  title: Posts API
+  description: External Posts API specification for mocking
+  version: 1.0.0
+servers:
+  - url: https://jsonplaceholder.typicode.com
+    description: Production server
+
+paths:
+  /posts:
+    get:
+      summary: Get all posts
+      operationId: getPosts
+      responses:
+        '200':
+          description: List of posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+          x-mock-payload: payloads/GET_posts_200.json
+    post:
+      summary: Create a new post
+      operationId: createPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostCreate'
+            x-mock-request: payloads/POST_posts_request.json
+      responses:
+        '201':
+          description: Post created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          x-mock-payload: payloads/POST_posts_201.json
+
+  /posts/{id}:
+    get:
+      summary: Get post by ID
+      operationId: getPostById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Post found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          x-mock-payload: payloads/GET_posts_1_200.json
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          x-mock-payload: payloads/GET_posts_999_404.json
+    put:
+      summary: Update post
+      operationId: updatePost
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostUpdate'
+            x-mock-request: payloads/PUT_posts_1_request.json
+      responses:
+        '200':
+          description: Post updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          x-mock-payload: payloads/PUT_posts_1_200.json
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          x-mock-payload: payloads/PUT_posts_999_404.json
+    delete:
+      summary: Delete post
+      operationId: deletePost
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Post deleted
+          x-mock-payload: null
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          x-mock-payload: payloads/DELETE_posts_999_404.json
+
+components:
+  schemas:
+    Post:
+      type: object
+      required:
+        - id
+        - title
+        - body
+        - userId
+        - createdAt
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        body:
+          type: string
+        userId:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    PostCreate:
+      type: object
+      required:
+        - title
+        - body
+        - userId
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        userId:
+          type: integer
+
+    PostUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        statusCode:
+          type: integer
+
