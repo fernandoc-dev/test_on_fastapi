@@ -53,7 +53,7 @@ def mock_external_api(posts_mock):
                 # Check if post was deleted
                 if post_id in deleted_posts:
                     from httpx import HTTPStatusError
-                    error_data = posts_mock.get_not_found_error()
+                    error_data = posts_mock.get_not_found_error(post_id)
                     mock_response.status_code = 404
                     mock_response.json = MagicMock(return_value=error_data)
                     mock_response.raise_for_status = MagicMock(
@@ -73,7 +73,7 @@ def mock_external_api(posts_mock):
                     else:
                         # Post not found - raise HTTPStatusError for 404
                         from httpx import HTTPStatusError
-                        error_data = posts_mock.get_not_found_error()
+                        error_data = posts_mock.get_not_found_error(post_id)
                         mock_response.status_code = 404
                         mock_response.json = MagicMock(return_value=error_data)
                         mock_response.raise_for_status = MagicMock(
@@ -129,7 +129,7 @@ def mock_external_api(posts_mock):
                 # Check if post was deleted
                 if post_id in deleted_posts:
                     from httpx import HTTPStatusError
-                    error_data = posts_mock.get_not_found_error()
+                    error_data = posts_mock.get_not_found_error(post_id)
                     mock_response.status_code = 404
                     mock_response.json = MagicMock(return_value=error_data)
                     mock_response.raise_for_status = MagicMock(
@@ -160,7 +160,7 @@ def mock_external_api(posts_mock):
                     else:
                         # Post not found
                         from httpx import HTTPStatusError
-                        error_data = posts_mock.get_not_found_error()
+                        error_data = posts_mock.get_not_found_error(post_id)
                         mock_response.status_code = 404
                         mock_response.json = MagicMock(return_value=error_data)
                         mock_response.raise_for_status = MagicMock(
@@ -193,7 +193,7 @@ def mock_external_api(posts_mock):
                 # Check if already deleted
                 if post_id in deleted_posts:
                     from httpx import HTTPStatusError
-                    error_data = posts_mock.get_not_found_error()
+                    error_data = posts_mock.get_not_found_error(post_id)
                     mock_response.status_code = 404
                     mock_response.json = MagicMock(return_value=error_data)
                     mock_response.raise_for_status = MagicMock(
@@ -215,7 +215,7 @@ def mock_external_api(posts_mock):
                     else:
                         # Post not found
                         from httpx import HTTPStatusError
-                        error_data = posts_mock.get_not_found_error()
+                        error_data = posts_mock.get_not_found_error(post_id)
                         mock_response.status_code = 404
                         mock_response.json = MagicMock(return_value=error_data)
                         mock_response.raise_for_status = MagicMock(
