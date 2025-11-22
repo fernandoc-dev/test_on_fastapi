@@ -1,5 +1,6 @@
 """
-Mock for payments provider for tests
+Mock for payments API provider for tests.
+Loads payloads from tests/infrastructure/external_apis/payments/payloads/
 """
 from typing import Dict, Any
 import json
@@ -7,10 +8,11 @@ from pathlib import Path
 
 
 class PaymentsMock:
-    """Mock for payments service"""
+    """Mock for payments API service"""
     
     def __init__(self):
-        self.base_path = Path(__file__).parent.parent / "payloads" / "payments"
+        """Initialize mock with payloads directory"""
+        self.base_path = Path(__file__).parent / "payloads"
     
     def get_charge_success(self) -> Dict[str, Any]:
         """Returns successful charge response"""
