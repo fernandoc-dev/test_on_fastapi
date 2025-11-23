@@ -8,4 +8,5 @@ testcontainers==3.7.1
 SQLAlchemy==2.0.36
 sqlmodel==0.0.22
 psycopg2-binary==2.9.9
+pyyaml==6.0.1
 

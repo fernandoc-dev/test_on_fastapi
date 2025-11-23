@@ -8,7 +8,10 @@ from httpx import AsyncClient
 from app.main import app
 
 # Register database fixtures module so pytest can discover the fixtures
-pytest_plugins = ["tests.infrastructure.db.fixtures"]
+pytest_plugins = [
+    "tests.infrastructure.db.fixtures",
+    "tests.infrastructure.external_apis.fixtures",
+]
 
 
 @pytest.fixture
