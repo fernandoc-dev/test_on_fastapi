@@ -219,20 +219,130 @@ postman-to-openapi collection.json -o openapi.yaml
 4. **Document edge cases**: Add comments in spec for special handling
 5. **Version control**: Commit both spec and payloads together
 
+## Mock HTTP Server
+
+In addition to code-level mocking, the system provides a **real HTTP mock server** that can be used for more realistic integration testing.
+
+### Benefits of Mock Server
+
+1. **Real HTTP requests**: Tests make actual HTTP calls, closer to production
+2. **Manual debugging**: Server is accessible via browser/Postman during tests
+3. **E2E testing**: Can be used for end-to-end tests that require real HTTP
+4. **State management**: Server maintains state across requests (e.g., deleted resources)
+
+### Using the Mock Server
+
+#### Basic Usage
+
+```python
+import pytest
+from httpx import AsyncClient
+from tests.infrastructure.external_apis.server import MockAPIServer
+
+@pytest.mark.asyncio
+async def test_with_mock_server(posts_mock_server: MockAPIServer):
+    """Test using real HTTP mock server"""
+    # Get the base URL of the running server
+    base_url = posts_mock_server.get_base_url()
+    # e.g., "http://127.0.0.1:54321"
+    
+    # Make requests to the mock server
+    import httpx
+    async with httpx.AsyncClient(base_url=base_url) as client:
+        response = await client.get("/posts")
+        assert response.status_code == 200
+        data = response.json()
+        assert len(data) > 0
+```
+
+#### Fixture Scopes
+
+The mock server fixtures support different scopes:
+
+- **Function scope** (default): Server starts/stops for each test
+  ```python
+  def test_one(posts_mock_server):
+      # Server started for this test
+      ...
+  ```
+
+- **Session scope**: Server starts once and is reused across all tests
+  ```python
+  def test_one(posts_mock_server_session):
+      # Server started once per test session
+      ...
+  ```
+
+#### State Management
+
+The server maintains state across requests (e.g., tracking deleted resources):
+
+```python
+@pytest.mark.asyncio
+async def test_delete_then_get(posts_mock_server: MockAPIServer):
+    base_url = posts_mock_server.get_base_url()
+    
+    async with httpx.AsyncClient(base_url=base_url) as client:
+        # Delete a resource
+        response = await client.delete("/posts/1")
+        assert response.status_code == 204
+        
+        # Subsequent GET should return 404
+        response = await client.get("/posts/1")
+        assert response.status_code == 404
+```
+
+#### Resetting State
+
+Reset server state between tests if needed:
+
+```python
+def test_with_clean_state(posts_mock_server: MockAPIServer):
+    # Reset state (clears deleted resources, etc.)
+    posts_mock_server.reset_state()
+    # ... your test
+```
+
+### Server Architecture
+
+The mock server:
+- **Dynamically creates routes** from OpenAPI specifications
+- **Serves responses** from payload files mapped via `x-mock-payload`
+- **Handles path parameters** (e.g., `/posts/{id}` → `/posts/123`)
+- **Supports all HTTP methods** (GET, POST, PUT, DELETE, PATCH)
+- **Runs in background thread** during tests
+
+### Choosing Between Mock Approaches
+
+**Use code-level mocking** (`mock_external_api` fixture) when:
+- Tests need to be very fast
+- You don't need real HTTP behavior
+- You want to test error scenarios easily
+
+**Use mock HTTP server** (`posts_mock_server` fixture) when:
+- You need real HTTP integration testing
+- You want to debug manually (access server in browser)
+- You're writing E2E tests
+- You need to test network-related behavior
+
+Both approaches use the same OpenAPI specs and payload files, so you can switch between them easily.
+
 ## Example: Posts API
 
 See `posts/` directory for a complete working example:
 - OpenAPI spec with all CRUD operations
 - Mock provider with helper methods
 - Payload files for success and error cases
-- Used in `tests/test_types/integration/test_posts_crud.py`
+- Used in `tests/test_types/integration/test_posts_crud.py` (code-level mocking)
+- Used in `tests/test_types/integration/test_posts_crud_with_server.py` (HTTP server)
 
 ## Future Enhancements
 
 Potential improvements:
+- [x] **Mock HTTP server** - Real HTTP server for integration testing
 - [ ] Support for Postman Collection format natively
 - [ ] Automatic payload validation against OpenAPI schemas
 - [ ] Generate mock provider from OpenAPI spec
-- [ ] Support for dynamic parameter substitution in payloads
+- [ ] Support for dynamic parameter substitution in payloads (templates)
 - [ ] Integration with API documentation tools
 
