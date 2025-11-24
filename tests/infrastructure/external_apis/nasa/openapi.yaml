@@ -1,0 +1,416 @@
+openapi: 3.0.3
+info:
+  title: NASA API
+  description: NASA Open APIs specification for mocking and testing - Only verified working endpoints
+  version: 1.0.0
+  contact:
+    name: NASA API Support
+    url: https://api.nasa.gov
+servers:
+  - url: https://api.nasa.gov
+    description: NASA API base URL
+    variables: {}
+
+paths:
+  /planetary/apod:
+    get:
+      summary: Astronomy Picture of the Day
+      description: Get the Astronomy Picture of the Day (APOD)
+      operationId: getApod
+      parameters:
+        - name: date
+          in: query
+          description: The date of the APOD image to retrieve (YYYY-MM-DD). Defaults to today.
+          required: false
+          schema:
+            type: string
+            format: date
+          example: "2020-01-01"
+        - name: hd
+          in: query
+          description: Return the URL for the high-resolution image if available
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: api_key
+          in: query
+          description: API key (use {{api_key}} variable in Postman)
+          required: true
+          schema:
+            type: string
+            example: "{{api_key}}"
+      responses:
+        '200':
+          description: APOD data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APOD'
+          x-mock-payload: payloads/GET_planetary_apod_200.json
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          x-mock-payload: payloads/GET_planetary_apod_400.json
+
+  /neo/rest/v1/feed:
+    get:
+      summary: Near Earth Object Feed
+      description: Retrieve a list of Near Earth Objects within a date range
+      operationId: getNeoFeed
+      parameters:
+        - name: start_date
+          in: query
+          description: Start date for asteroid search (YYYY-MM-DD)
+          required: true
+          schema:
+            type: string
+            format: date
+          example: "2015-09-07"
+        - name: end_date
+          in: query
+          description: End date for asteroid search (YYYY-MM-DD). Maximum 7 days from start_date.
+          required: false
+          schema:
+            type: string
+            format: date
+          example: "2015-09-08"
+        - name: detailed
+          in: query
+          description: Return detailed information
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: api_key
+          in: query
+          description: API key (use {{api_key}} variable in Postman)
+          required: true
+          schema:
+            type: string
+            example: "{{api_key}}"
+      responses:
+        '200':
+          description: NEO feed retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NeoFeed'
+          x-mock-payload: payloads/GET_neo_feed_200.json
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          x-mock-payload: payloads/GET_neo_feed_400.json
+
+  /DONKI/notifications:
+    get:
+      summary: Space Weather Notifications
+      description: Get Space Weather Database Of Notifications, Knowledge, Information (DONKI)
+      operationId: getDonkiNotifications
+      parameters:
+        - name: startDate
+          in: query
+          description: Start date in YYYY-MM-DD format
+          required: false
+          schema:
+            type: string
+            format: date
+          example: "2019-08-06"
+        - name: endDate
+          in: query
+          description: End date in YYYY-MM-DD format
+          required: false
+          schema:
+            type: string
+            format: date
+          example: "2019-08-06"
+        - name: type
+          in: query
+          description: Event type (FLR, SEP, CME, GST, RBE, report)
+          required: false
+          schema:
+            type: string
+          example: "FLR"
+        - name: api_key
+          in: query
+          description: API key (use {{api_key}} variable in Postman)
+          required: true
+          schema:
+            type: string
+            example: "{{api_key}}"
+      responses:
+        '200':
+          description: DONKI notifications retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DonkiNotification'
+          x-mock-payload: payloads/GET_donki_notifications_200.json
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          x-mock-payload: payloads/GET_donki_notifications_400.json
+
+  /insight_weather/:
+    get:
+      summary: Mars Weather Service
+      description: Get weather data from the InSight Mars lander
+      operationId: getInsightWeather
+      parameters:
+        - name: api_key
+          in: query
+          description: API key (use {{api_key}} variable in Postman)
+          required: true
+          schema:
+            type: string
+            example: "{{api_key}}"
+        - name: feedtype
+          in: query
+          description: Response format (json or xml)
+          required: false
+          schema:
+            type: string
+            enum: [json, xml]
+            default: json
+        - name: ver
+          in: query
+          description: API version
+          required: false
+          schema:
+            type: string
+            default: "1.0"
+      responses:
+        '200':
+          description: InSight weather data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InsightWeather'
+          x-mock-payload: payloads/GET_insight_weather_200.json
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          x-mock-payload: payloads/GET_insight_weather_400.json
+
+  /techtransfer/patent/:
+    get:
+      summary: Tech Transfer Patents
+      description: Get NASA technology transfer patents
+      operationId: getTechTransferPatents
+      parameters:
+        - name: query
+          in: query
+          description: Search query
+          required: false
+          schema:
+            type: string
+          example: "solar"
+        - name: limit
+          in: query
+          description: Number of results to return
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: api_key
+          in: query
+          description: API key (use {{api_key}} variable in Postman)
+          required: true
+          schema:
+            type: string
+            example: "{{api_key}}"
+      responses:
+        '200':
+          description: Tech transfer patents retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TechTransferPatents'
+          x-mock-payload: payloads/GET_techtransfer_patents_200.json
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          x-mock-payload: payloads/GET_techtransfer_patents_400.json
+
+components:
+  schemas:
+    APOD:
+      type: object
+      required:
+        - date
+        - explanation
+        - title
+        - url
+      properties:
+        date:
+          type: string
+          format: date
+        explanation:
+          type: string
+        hdurl:
+          type: string
+          format: uri
+          nullable: true
+        media_type:
+          type: string
+          enum: [image, video]
+        service_version:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        copyright:
+          type: string
+          nullable: true
+
+    NeoFeed:
+      type: object
+      required:
+        - element_count
+        - near_earth_objects
+      properties:
+        links:
+          type: object
+          properties:
+            next:
+              type: string
+              format: uri
+            previous:
+              type: string
+              format: uri
+            self:
+              type: string
+              format: uri
+        element_count:
+          type: integer
+        near_earth_objects:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: object
+              properties:
+                links:
+                  type: object
+                  properties:
+                    self:
+                      type: string
+                      format: uri
+                id:
+                  type: string
+                neo_reference_id:
+                  type: string
+                name:
+                  type: string
+                designation:
+                  type: string
+                nasa_jpl_url:
+                  type: string
+                  format: uri
+                absolute_magnitude_h:
+                  type: number
+                  format: float
+                estimated_diameter:
+                  type: object
+                  properties:
+                    kilometers:
+                      type: object
+                      properties:
+                        estimated_diameter_min:
+                          type: number
+                        estimated_diameter_max:
+                          type: number
+                    meters:
+                      type: object
+                      properties:
+                        estimated_diameter_min:
+                          type: number
+                        estimated_diameter_max:
+                          type: number
+                is_potentially_hazardous_asteroid:
+                  type: boolean
+                close_approach_data:
+                  type: array
+                  items:
+                    type: object
+
+    DonkiNotification:
+      type: object
+      properties:
+        messageType:
+          type: string
+        messageID:
+          type: string
+        messageURL:
+          type: string
+          format: uri
+        messageIssueTime:
+          type: string
+          format: date-time
+        messageBody:
+          type: string
+
+    InsightWeather:
+      type: object
+      properties:
+        sol_keys:
+          type: array
+          items:
+            type: string
+        validity_checks:
+          type: object
+        description:
+          type: object
+
+    TechTransferPatents:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              title:
+                type: string
+              abstract:
+                type: string
+              patentNumber:
+                type: string
+              expirationDate:
+                type: string
+                format: date
+              applicationDate:
+                type: string
+                format: date
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
