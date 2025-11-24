@@ -52,3 +52,9 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+
+# Others
+/docs/
+
+# Postman test runs
+*.postman_test_run.json
