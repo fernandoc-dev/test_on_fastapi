@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": "BAD_REQUEST",
+    "message": "Invalid date format. Use YYYY-MM-DD"
+  }
+}
+

@@ -1,0 +1,17 @@
+[
+  {
+    "messageType": "FLR",
+    "messageID": "2019-08-06T00:00:00-FLR-001",
+    "messageURL": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/FLR/12345/1",
+    "messageIssueTime": "2019-08-06T00:00:00Z",
+    "messageBody": "Type: Flare\nBegin Time: 2019-08-06T00:00:00Z\nPeak Time: 2019-08-06T00:15:00Z\nEnd Time: 2019-08-06T00:30:00Z\nClass: M1.2\nSource Location: N15E45\nActive Region: 12345"
+  },
+  {
+    "messageType": "CME",
+    "messageID": "2019-08-06T12:00:00-CME-001",
+    "messageURL": "https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/CME/12346/1",
+    "messageIssueTime": "2019-08-06T12:00:00Z",
+    "messageBody": "Type: CME\nTime: 2019-08-06T12:00:00Z\nSpeed: 450 km/s\nType: C\nSource Location: N20E50"
+  }
+]
+

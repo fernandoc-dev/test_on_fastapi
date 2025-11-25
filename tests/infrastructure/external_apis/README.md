@@ -164,7 +164,22 @@ class MyAPIMock:
 
 ### Step 5: Create Payload Files
 
-Add JSON files to `payloads/` directory matching the spec mappings.
+**Recommended approach: Use real API responses from Postman**
+
+1. Execute the collection in Postman with valid parameters
+2. For successful responses (200, 201, etc.):
+   - Right-click on the response → "Save Response" → "Save as Example"
+   - Or manually copy the response body
+3. Create JSON files in `payloads/` directory using the real responses
+4. Name files according to the mapping in `openapi.yaml` (e.g., `GET_posts_200.json`)
+
+**Why use real responses?**
+- Mocks reflect exactly what the API returns
+- Captures real data structures and edge cases
+- Easier to maintain when API changes
+- More realistic test scenarios
+
+**Alternative**: Create example payloads based on OpenAPI schemas (less realistic but faster for initial setup)
 
 ### Step 6: Use in Tests
 

@@ -1,0 +1,29 @@
+{
+  "results": [
+    {
+      "id": 1,
+      "title": "Solar Panel Efficiency Enhancement System",
+      "abstract": "A novel system for improving solar panel efficiency through advanced tracking and cooling mechanisms. This technology utilizes adaptive algorithms to optimize panel orientation and thermal management, resulting in up to 30% improvement in energy conversion rates.",
+      "patentNumber": "US12345678",
+      "expirationDate": "2035-12-31",
+      "applicationDate": "2010-01-15"
+    },
+    {
+      "id": 2,
+      "title": "Advanced Composite Materials for Space Applications",
+      "abstract": "Lightweight composite materials designed for extreme space environments. These materials exhibit superior strength-to-weight ratios and resistance to radiation, making them ideal for spacecraft construction and satellite components.",
+      "patentNumber": "US87654321",
+      "expirationDate": "2038-06-30",
+      "applicationDate": "2012-03-20"
+    },
+    {
+      "id": 3,
+      "title": "Autonomous Navigation System for Planetary Rovers",
+      "abstract": "An intelligent navigation system that enables rovers to autonomously traverse challenging terrain. The system combines machine learning algorithms with real-time sensor data to make navigation decisions, reducing the need for constant human intervention.",
+      "patentNumber": "US11223344",
+      "expirationDate": "2040-09-15",
+      "applicationDate": "2015-07-10"
+    }
+  ]
+}
+

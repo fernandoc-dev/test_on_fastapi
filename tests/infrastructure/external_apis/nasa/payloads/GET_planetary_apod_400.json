@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": "BAD_REQUEST",
+    "message": "Date must be between Jun 16, 1995 and today"
+  }
+}
+
