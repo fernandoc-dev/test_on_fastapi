@@ -18,7 +18,9 @@ import uvicorn
 from threading import Thread
 import time
 
-from .posts.spec_loader import OpenAPISpecLoader
+# Import spec_loader dynamically based on API
+import importlib.util
+import sys
 
 
 class MockAPIServer:
@@ -42,8 +44,29 @@ class MockAPIServer:
         self.spec_path = spec_path
         self.port = port
         self.app = FastAPI(title=f"Mock {api_name.title()} API")
+        
+        # Dynamically import spec_loader from the API's directory
+        spec_dir = spec_path.parent
+        spec_loader_path = spec_dir / "spec_loader.py"
+        
+        if not spec_loader_path.exists():
+            raise FileNotFoundError(
+                f"spec_loader.py not found in {spec_dir}. "
+                f"Each API directory must have its own spec_loader.py"
+            )
+        
+        # Load the spec_loader module dynamically
+        module_name = f"tests.infrastructure.external_apis.{spec_dir.name}.spec_loader"
+        spec = importlib.util.spec_from_file_location(module_name, spec_loader_path)
+        if spec is None or spec.loader is None:
+            raise ImportError(f"Could not load spec_loader from {spec_loader_path}")
+        
+        spec_loader_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(spec_loader_module)
+        OpenAPISpecLoader = spec_loader_module.OpenAPISpecLoader
+        
         self.spec_loader = OpenAPISpecLoader(spec_path)
-        self.spec_dir = spec_path.parent
+        self.spec_dir = spec_dir
         self._server_thread: Optional[Thread] = None
         self._server_process: Optional[uvicorn.Server] = None
         self._actual_port: Optional[int] = None
