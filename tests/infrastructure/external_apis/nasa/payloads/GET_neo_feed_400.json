@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": "BAD_REQUEST",
+    "message": "start_date and end_date must be within 7 days of each other"
+  }
+}
+

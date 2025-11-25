@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": "BAD_REQUEST",
+    "message": "Invalid limit parameter. Must be between 1 and 100"
+  }
+}
+

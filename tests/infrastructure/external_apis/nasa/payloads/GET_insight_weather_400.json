@@ -1,0 +1,7 @@
+{
+  "error": {
+    "code": "BAD_REQUEST",
+    "message": "Invalid feedtype. Must be 'json' or 'xml'"
+  }
+}
+
