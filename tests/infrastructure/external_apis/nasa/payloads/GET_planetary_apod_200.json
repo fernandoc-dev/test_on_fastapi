@@ -1,11 +1,9 @@
 {
   "date": "2020-01-01",
-  "explanation": "What's happening in the sky? The atmosphere over northern Norway appeared quite strange for about 30 minutes last Friday when colorful clouds, dots, and plumes suddenly appeared. The colors were actually created by the NASA-funded Auroral Zone Upwelling Rocket Experiment (AZURE) which dispersed gas tracers to probe winds in Earth's upper atmosphere. AZURE's tracers originated from two short-lived sounding rockets launched from the Andøya Space Center in Norway. The harmless gases, trimethylaluminum and a barium/strontium mixture, were released into the ionosphere at altitudes of 115 and 250 km. The vapor trails were observed dispersing from several ground stations. Mapping how AZURE's vapors dispersed should increase humanity's understanding of how the solar wind transfers energy to the Earth and powers aurora.",
-  "hdurl": "https://apod.nasa.gov/apod/image/2001/AZURE_NASA_1080.jpg",
+  "explanation": "Why is Betelgeuse fading?  No one knows.  Betelgeuse, one of the brightest and most recognized stars in the night sky, is only half as bright as it used to be only five months ago.  Such variability is likely just  normal behavior for this famously variable supergiant, but the recent dimming has rekindled discussion on how long it may be before Betelgeuse does go supernova.  Known for its red color, Betelgeuse is one of the few stars to be resolved by modern telescopes, although only barely.  The featured artist's illustration imagines how Betelgeuse might look up close. Betelgeuse is thought to have a complex and tumultuous surface that frequently throws impressive flares.  Were it to replace the Sun (not recommended), its surface would extend out near the orbit of Jupiter, while gas plumes would bubble out past Neptune.  Since Betelgeuse is about 700 light years away, its eventual supernova will not endanger life on Earth even though its brightness may rival that of a full Moon.  Astronomers -- both amateur and professional -- will surely continue to monitor Betelgeuse as this new decade unfolds.    Free Presentation: APOD Editor to show best astronomy images of 2019 -- and the decade -- in NYC on January 3",
+  "hdurl": "https://apod.nasa.gov/apod/image/2001/BetelgeuseImagined_EsoCalcada_2662.jpg",
   "media_type": "image",
   "service_version": "v1",
-  "title": "AZURE Vapor Trails over Norway",
-  "url": "https://apod.nasa.gov/apod/image/2001/AZURE_NASA_960.jpg",
-  "copyright": "NASA"
+  "title": "Betelgeuse Imagined",
+  "url": "https://apod.nasa.gov/apod/image/2001/BetelgeuseImagined_EsoCalcada_960.jpg"
 }
-
