@@ -2,7 +2,7 @@
 Main FastAPI application
 """
 from fastapi import FastAPI
-from app.routers import users, posts
+from app.routers import nasa
 
 app = FastAPI(
     title="FastAPI Test Template",
@@ -11,8 +11,7 @@ app = FastAPI(
 )
 
 # Include routers
-app.include_router(users.router)
-app.include_router(posts.router)
+app.include_router(nasa.router)
 
 
 @app.get("/")
